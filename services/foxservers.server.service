@@ -1,0 +1,24 @@
+[Unit]
+Description=FoxServers Docker Server
+# When systemd stops or restarts foxservers, the action is propagated to this unit
+PartOf=foxservers.core.service
+# Start this unit after foxservers start
+After=foxservers.core.service
+# Requires that core service is available
+Requires=foxservers.core.service
+
+[Service]
+# User is foxservers service user
+User=root
+# Run Servers.Start_all On Start
+ExecStart=/usr/bin/bash /opt/foxservers/core/scripts/foxservers.servers.start_all.sh
+# Run Servers.Stop_all On Stop
+ExecStop=/usr/bin/bash /opt/foxservers/core/scripts/foxservers.servers.stop_all.sh
+# Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
+Restart=on-failure
+# This service shall be considered active after start
+RemainAfterExit=yes
+
+[Install]
+# This unit should start when foxservers is starting
+WantedBy=foxservers.core.service

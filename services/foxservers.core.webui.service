@@ -1,0 +1,20 @@
+[Unit]
+Description=FoxServers WebUI Manager
+# When systemd stops or restarts the foxservers.core, the action is propagated to this unit
+PartOf=foxservers.core.service
+# Start this unit after the foxservers.core start
+After=foxservers.core.service
+# Requires that core service is available
+Requires=foxservers.core.service
+
+[Service]
+# User is foxservers service user
+User=root
+# Pretend that the component is running
+ExecStart=/bin/sleep infinity
+# Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
+Restart=on-failure
+
+[Install]
+# This unit should start when foxservers is starting
+WantedBy=foxservers.core.service

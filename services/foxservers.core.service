@@ -1,0 +1,18 @@
+[Unit]
+Description=FoxServers Core
+# When systemd stops or restarts foxservers, the action is propagated to this unit
+PartOf=foxservers.service
+# Start this unit after foxservers start
+After=foxservers.service
+
+[Service]
+# User is foxservers service user
+User=root
+# Pretend that the component is running
+ExecStart=/bin/sleep infinity
+# Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
+Restart=on-failure
+
+[Install]
+# This unit should start when foxservers is starting
+WantedBy=foxservers.service
