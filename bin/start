@@ -1,4 +1,4 @@
 #!/bin/sh
 core_start() {
-    sudo systemctl start foxservers
+    sudo systemctl start nebula
 }
