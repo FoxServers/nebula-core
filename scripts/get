@@ -1,0 +1,21 @@
+#!/bin/sh
+case $1 in
+    releases)
+        curl -L "https://api.github.com/repos/FoxServers/docker/releases"
+        ;;
+    *)
+        if [ -d "/tmp/nebula/"]
+        then
+            sudo rm -rf /tmp/nebula/{*,.*}
+        else
+            sudo mkdir /tmp/nebula/
+        fi
+
+        curl -L https://api.github.com/repos/FoxServers/docker/tarball/${1} -o ${1}.tar.gz
+        sudo tar -zvxf ${1}.tar.gz --directory /tmp/nebula --strip-components=1
+        sudo mv /tmp/nebula/docker-compose.yml ./
+        sudo rm ${1}.tar.gz
+        sudo rm -rf /tmp/nebula/{*,.*}
+        ;;
+
+esac

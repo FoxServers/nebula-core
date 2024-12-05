@@ -1,21 +1,16 @@
-help() {
-    cat /opt/foxservers/core/man/autostart
+#!/bin/sh
+core_autostart() {
+    case '$1' in
+        enable)
+            sudo systemctl enable nebula.service
+            ;;
+
+        disable)
+            sudo systemctl disable nebula.service
+            ;;
+
+        *)
+            /usr/bin/bash /opt/nebula/core/scripts/error
+            ;;
+    esac
 }
-
-case "$1" in
-    help)
-        help
-        ;;
-
-    enable)
-        sudo systemctl enable foxservers.service
-        ;;
-
-    disable)
-        sudo systemctl disable foxservers.service
-        ;;
-
-    *)
-        help
-        ;;
-esac

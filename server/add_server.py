@@ -4,29 +4,50 @@ import sys
 import json
 
 logger = logging.getLogger(__file__)
-logging.basicConfig(filename='/opt/foxservers/core/logs/core.log', encoding='utf-8', level=logging.DEBUG)
-handler = logging.handlers.RotatingFileHandler(filename='/opt/foxservers/core/logs/core.log', mode='a', maxBytes=8000, backupCount=3, encoding='utf-8')
+logging.basicConfig(filename='/opt/nebula/logs/core.log', encoding='utf-8', level=logging.DEBUG)
+handler = logging.handlers.RotatingFileHandler(filename='/opt/nebula/logs/core.log', mode='a', maxBytes=8000, backupCount=3, encoding='utf-8')
 logger.addHandler(handler)
 
-if (sys.argv[1] == None):
+if (len(sys.argv) < 2):
     logger.error(f"[Server Manager] Failed to add server: Missing server name")
-    ValueError("[Server Manager] Failed to add server: Missing server name")
+    raise ValueError("[Server Manager] Failed to add server: Missing server name")
+
+def save_data(data):
+    # Save the changes
+    with open('/opt/nebula/config.json', 'w') as file:
+        json.dump(data, file, indent=4)
+
+def add_server(server_name, data, logger):
+    server_data = {
+        "core": True
+    }
+    data['servers'][server_name] = server_data
+    logger.info(f"[Server Manager] Added {server_name} to core")
+    save_data(data)
+
+def update_server(server_name, data, logger):
+    data['servers'][server_name]['core'] = True
+    logger.info(f"[Server Manager] Updated {server_name} core to True")
+    save_data(data)
 
 try:
-    with open('/opt/foxservers/core/servers.json', 'r') as f:
-        try:
-            data = json.load(f)
-        except json.JSONDecodeError:
-            data = []
-    data.append({"server_name": sys.argv[1]})
-    data_no_duplicates = []
-    for i in data:
-        if i not in data_no_duplicates:
-            data_no_duplicates.append(i)
-        
-    with open('/opt/foxservers/core/servers.json', 'w') as f:
-        json.dump(data_no_duplicates, f, indent=1)
+    # Load the JSON data
+    try:
+        with open('/opt/nebula/config.json', 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
 
+    # Error handling
+    if 'servers' not in data:
+        data['servers'] = {}
 
-except:
-    logger.error(f"[Server Manager] Failed to add server: Could not find servers.json")
+    # Extract server names
+    server_names = list(data.get('servers', {}).keys())
+    if sys.argv[1] not in data['servers']:
+        add_server(server_name=sys.argv[1], data=data, logger=logger)
+    else:
+        update_server(server_name=sys.argv[1], data=data, logger=logger)
+
+except Exception as e:
+    logger.error(f"[Server Manager] A critical error has occurred: {e}")

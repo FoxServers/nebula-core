@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "Error: No arguement specified. See our documentation: https://foxservers.net/documentation/nebula"

@@ -1,11 +1,9 @@
 [Unit]
-Description=FoxServers Management Platform
+Description=Nebula Management Platform
 
 
 [Service]
-# User is foxservers service user
 User=root
-# The dummy program will exit
 Type=oneshot
 # Execute a dummy program
 ExecStart=/bin/true

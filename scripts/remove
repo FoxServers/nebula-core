@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+    /usr/bin/bash /opt/nebula/core/bin/error
+    exit 22
+fi
+sudo /opt/nebula/.venv/bin/python /opt/nebula/core/server/remove_server.py ${1} ${2}

@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ -d "/srv/foxservers/${1}" ]; then
+if [ -d "/srv/nebula/${1}" ]; then
     printf 'Server already initialized, would you like to override configuration (y/N)? '
     read answer
     if [ "$answer" != "${answer#[Yy]}" ] ;then 
@@ -8,7 +8,7 @@ if [ -d "/srv/foxservers/${1}" ]; then
         exit
     fi
 else
-    sudo mkdir /srv/foxservers/${1}
+    sudo mkdir /srv/nebula/${1}
 fi
 
 if [ -z "$1" ]; then
@@ -31,7 +31,7 @@ if ! [ -z "$2" ]; then
             ;;
 
         *)
-            sudo mv ${2} /srv/foxservers/${1}/.foxservers-core.env
+            sudo mv ${2} /srv/nebula/${1}/.nebula.env
             ;;
     esac
 fi
@@ -45,7 +45,7 @@ if ! [ -z "$3" ]; then
         echo "$3 should be dockerfile, not directory";
         exit 21
     fi
-    sudo mv ${3} /srv/foxservers/${1}/
+    sudo mv ${3} /srv/nebula/${1}/
 fi
 
 if ! [ -z "$4" ]; then
@@ -53,7 +53,7 @@ if ! [ -z "$4" ]; then
         echo "$4 should be .zip of mods, not directory";
         exit 21
     fi
-    sudo mv ${4} /srv/foxservers/${1}/
+    sudo mv ${4} /srv/nebula/${1}/
 fi
 
 if ! [ -z "$5" ]; then
@@ -61,5 +61,5 @@ if ! [ -z "$5" ]; then
         echo "$5 should be .png, not directory";
         exit 21
     fi
-    sudo mv ${5} /srv/foxservers/${1}/
+    sudo mv ${5} /srv/nebula/${1}/
 fi

@@ -1,0 +1,23 @@
+[Unit]
+Description=Nebula Docker servers
+# When systemd stops or restarts core, the action is propagated to this unit
+PartOf=nebula.core.service
+# Start this unit after core start
+After=nebula.core.service
+# Requires that core service is available
+Requires=nebula.core.service
+
+[Service]
+User=root
+# Run start_all On Start
+ExecStart=/usr/bin/bash /opt/nebula/core/scripts/start_all
+# Run stop_all On Stop
+ExecStop=/usr/bin/bash /opt/nebula/core/scripts/stop_all
+# Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
+Restart=on-failure
+# This service shall be considered active after start
+RemainAfterExit=yes
+
+[Install]
+# This unit should start when core is starting
+WantedBy=nebula.core.service

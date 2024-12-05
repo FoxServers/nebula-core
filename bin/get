@@ -1,18 +1,9 @@
 #!/bin/sh
-help() {
-    cat /opt/foxservers/core/man/get
+core_get() {
+    if [ -z "$1" ]; then
+        /usr/bin/bash /opt/nebula/core/bin/error
+        exit 22
+    fi
+
+    /usr/bin/bash /opt/nebula/core/scripts/get ${1}
 }
-
-if [ -z "$1" ]; then
-    echo "Must specify file name or tag. Type 'foxservers get help' for more info."
-    exit 22
-fi
-
-case "$1" in
-    help)
-        help
-        ;;
-    *)
-        /usr/bin/bash /opt/foxservers/core/scripts/foxservers.server.get.sh ${1}
-        ;;
-esac

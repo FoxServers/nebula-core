@@ -1,13 +1,4 @@
 #!/bin/sh
-help() {
-    cat /opt/foxservers/core/man/stop
+core_stop() {
+    sudo systemctl stop nebula
 }
-
-case "$1" in
-    help)
-        help
-        ;;
-    *)
-        sudo systemctl stop foxservers
-        ;;
-esac
