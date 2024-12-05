@@ -4,7 +4,7 @@ case $1 in
         curl -L "https://api.github.com/repos/FoxServers/docker/releases"
         ;;
     *)
-        if [ -d "/tmp/nebula/"]
+        if [ -d "/tmp/nebula/" ]
         then
             sudo rm -rf /tmp/nebula/{*,.*}
         else
