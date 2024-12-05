@@ -1,5 +1,5 @@
 [Unit]
-Description=Nebula Docker servers
+Description=Nebula Docker Servers
 # When systemd stops or restarts core, the action is propagated to this unit
 PartOf=nebula.core.service
 # Start this unit after core start
@@ -13,8 +13,6 @@ User=root
 ExecStart=/usr/bin/bash /opt/nebula/core/scripts/start_all
 # Run stop_all On Stop
 ExecStop=/usr/bin/bash /opt/nebula/core/scripts/stop_all
-# Run stop_all Post Stop (runs if an error occurs)
-ExecStopPost=/usr/bin/bash /opt/nebula/core/scripts/stop_all
 # Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
 Restart=on-failure
 # This service shall be considered active after start

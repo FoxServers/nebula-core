@@ -1,7 +1,6 @@
 [Unit]
 Description=Nebula Management Platform
 
-
 [Service]
 User=root
 Type=oneshot
