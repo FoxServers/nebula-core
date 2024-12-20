@@ -7,10 +7,10 @@ After=nebula.core.service
 
 [Service]
 User=root
-# Read Environment File for nebula-redis
-EnvironmentFile=/opt/nebula/etc/nebula-redis.env
-# Run Core Redis - use nebula-redis.env
-ExecStart=/usr/bin/docker run --env-file /opt/nebula/etc/nebula-redis.env --name nebula-redis --rm redis/redis-stack-server:latest
+# Start docker compose for redis
+ExecStart=/usr/bin/docker-compose -f /opt/nebula/docker-compose.yml --env-file /opt/nebula/core/redis/nebula-redis.env up -d
+# Stop docker compose for redis
+ExecStop=/usr/bin/docker-compose -f /opt/nebula/docker-compose.yml down --volumes --remove-orphans
 # Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
 Restart=on-failure
 

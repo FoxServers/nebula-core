@@ -1,5 +1,5 @@
 [Unit]
-Description=Nebula Local Redis
+Description=Nebula Logreader
 # When systemd stops or restarts nebula core, the action is propagated to this unit
 PartOf=nebula.core.extensions.service
 # Start this unit after nebula start
