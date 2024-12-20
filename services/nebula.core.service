@@ -7,7 +7,7 @@ After=nebula.service
 
 [Service]
 User=root
-# Dummy service to manage core dependencies
+# Run Core
 ExecStart=/bin/sleep infinity
 # Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
 Restart=on-failure

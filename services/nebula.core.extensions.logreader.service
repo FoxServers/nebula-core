@@ -1,0 +1,17 @@
+[Unit]
+Description=Nebula Local Redis
+# When systemd stops or restarts nebula core, the action is propagated to this unit
+PartOf=nebula.core.extensions.service
+# Start this unit after nebula start
+After=nebula.core.extensions.service
+
+[Service]
+User=root
+# Run logreader
+ExecStart=/opt/nebula/.venv/bin/python /opt/nebula/core/extension/logreader.py
+# Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
+Restart=on-failure
+
+[Install]
+# This unit should start when nebula is starting
+WantedBy=nebula.core.extensions.service
