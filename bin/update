@@ -7,7 +7,7 @@ core_update() {
 
     case "$1" in
         releases)
-            curl -L "https://api.github.com/repos/FoxServers/core/releases" | grep "tag_name"
+            curl -L "https://api.github.com/repos/FoxServers/nebula-core/releases" | grep "tag_name"
             exit 0
             ;;
         *)
@@ -37,14 +37,14 @@ core_update() {
     sudo cp -pf /etc/systemd/system/foxservers.* /tmp/foxservers.bak/services/
     sudo mkdir /tmp/foxservers/
     sudo mkdir /tmp/foxservers/downloads/
-    sudo curl -L https://api.github.com/repos/FoxServers/core/tarball/${1} -o /tmp/foxservers/downloads/core.${1}.tar.gz &&
+    sudo curl -L https://api.github.com/repos/FoxServers/nebula-core/tarball/${1} -o /tmp/foxservers/downloads/nebula-core.${1}.tar.gz &&
     sudo tar -zvxf /tmp/foxservers/downloads/core.${1}.tar.gz --directory /tmp/foxservers/downloads --strip-components=1 &&
     cd /tmp/foxservers/downloads/ &&
     sudo chmod +x foxservers_install.sh &&
     sudo rm -R /opt/foxservers/ &&
     sudo rm -R /etc/systemd/system/foxservers.* &&
     ./foxservers_install.sh &&
-    sudo rm /tmp/foxservers/downloads/core.${1}.tar.gz &&
+    sudo rm /tmp/foxservers/downloads/nebula-core.${1}.tar.gz &&
     sudo rm -rf /tmp/foxservers/downloads/{*,.*}
     cd /srv/foxservers/
 }

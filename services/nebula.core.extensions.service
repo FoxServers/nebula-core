@@ -7,12 +7,10 @@ After=nebula.core.service
 
 [Service]
 User=root
-# Set default values
-Environment="REDIS_PORT=6379"
 # Read Environment File for nebula-redis
-EnvironmentFile=/opt/nebula/etc/nebula-redis.conf
-# Run Core Redis - use nebula-redis.conf
-ExecStart=/usr/bin/docker run --env-file /opt/nebula/etc/nebula-redis.conf --name nebula-redis --rm -p $REDIS_PORT:6379 redis/redis-stack-server:latest
+EnvironmentFile=/opt/nebula/etc/nebula-redis.env
+# Run Core Redis - use nebula-redis.env
+ExecStart=/usr/bin/docker run --env-file /opt/nebula/etc/nebula-redis.env --name nebula-redis --rm redis/redis-stack-server:latest
 # Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
 Restart=on-failure
 
