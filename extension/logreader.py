@@ -10,6 +10,8 @@ from logging.handlers import RotatingFileHandler
 logger = logging.getLogger(__file__)
 logging.basicConfig(filename='/opt/nebula/logs/core.log', encoding='utf-8', level=logging.DEBUG)
 handler = logging.handlers.RotatingFileHandler(filename='/opt/nebula/logs/core.log', mode='a', maxBytes=8000, backupCount=3, encoding='utf-8')
+formatter = logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 # Read config.json
@@ -32,16 +34,16 @@ for server in servers:
         logger.debug(f"Found custom log path for {server}: {custom_filepath}")
         file_paths.append(custom_filepath)
     else:
-        logger.debug(f"Applying default log path for {server}: {"/srv/nebula/{server}/logs/latest.log"}")
+        logger.debug(f"Applying default log path for {server}: /srv/nebula/{server}/logs/latest.log")
         file_paths.append(f"/srv/nebula/{server}/logs/latest.log")
 
 # Redis Config    
 logger.debug(f"Found logreader configs in config.json: {redis_config, file_paths}")
 if redis_config:
-    host = redis_config.get("ip", "localhost")
+    host = redis_config.get("ip", "0.0.0.0")
     port = redis_config.get("port", 6379)
 else:
-    host = "localhost"
+    host = "0.0.0.0"
     port = 6379
 logger.debug(f"Communicating with redis at: {host, port}")
 
@@ -77,8 +79,10 @@ def compare_word(message, word):
     
 def get_word_lists_files():
     lists = []
+    logger.debug(f"Reading word lists...")
     for file in os.listdir("/etc/nebula/core/logreader/"):
         if file.endswith(".json"):
+            logger.debug(f"{file}")
             lists.append(file)
     return lists
 
@@ -111,9 +115,10 @@ def catagorize_message(message):
         create_default_word_lists()
         get_word_lists_files()
     for word_lists_file in words_lists_files:
-        with open(word_lists_file) as f:
+        full_path = "/etc/nebula/core/logreader/" + word_lists_file
+        with open(full_path) as f:
             config = json.load(f)
-        for channel, word_list in config:
+        for channel, word_list in config.items():
             for word in word_list:
                 if compare_word(message=message, word=word):
                     set_channels.append(channel)

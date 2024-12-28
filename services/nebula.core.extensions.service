@@ -8,11 +8,13 @@ After=nebula.core.service
 [Service]
 User=root
 # Start docker compose for redis
-ExecStart=/usr/bin/docker-compose -f /opt/nebula/docker-compose.yml --env-file /opt/nebula/core/redis/nebula-redis.env up -d
+ExecStart=/usr/bin/docker-compose -f /opt/nebula/core/redis/docker-compose.yml --env-file /opt/nebula/core/redis/nebula-redis.env up -d
 # Stop docker compose for redis
-ExecStop=/usr/bin/docker-compose -f /opt/nebula/docker-compose.yml down --volumes --remove-orphans
+ExecStop=/usr/bin/docker-compose -f /opt/nebula/core/redis/docker-compose.yml down --volumes --remove-orphans
 # Restart the service on non-zero exit code when terminated by a signal other than SIGHUP, SIGINT, SIGTERM or SIGPIPE
 Restart=on-failure
+# This service shall be considered active after start
+RemainAfterExit=yes
 
 [Install]
 # This unit should start when nebula is starting
